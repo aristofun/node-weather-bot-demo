@@ -24,6 +24,8 @@ function locationReplier(ctx, lat, lng) {
 
   weather.weather(lat, lng)
     .then((resp) => {
+      console.log('DarkSky api response: ' + resp);
+      
       let cw = resp.data.currently;
 
       console.log(`${cw.summary} ${cw.temperature}˚C`);
@@ -38,7 +40,7 @@ function locationReplier(ctx, lat, lng) {
 
       console.log(message);
 
-      return ctx.replyWithPhoto(
+      ctx.replyWithPhoto(
         `https://darksky.net/images/weather-icons/${cw.icon}.png`,
         {
           caption: message,
@@ -62,7 +64,8 @@ bot.on('message', (ctx) => {
 
   geo.geoCodeAddress(ctx.message.text)
     .then((resp) => {
-      return locationReplier(undefined, resp.lat, resp.lng);
+      console.log('geo response: ' + resp);
+      locationReplier(undefined, resp.lat, resp.lng);
     })
     .catch((err) => {
       let errMsg = `${err.name}/${err.statusCode}/${err.message}`;
