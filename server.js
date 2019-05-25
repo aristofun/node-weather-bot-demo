@@ -23,9 +23,8 @@ function locationReplier(ctx, lat, lng) {
 
   weather.weather(lat, lng)
     .then((resp) => {
-      console.log('DarkSky api response: ' + JSON.stringify(resp.data));
-
       let cw = resp.data.currently;
+      console.log('DarkSky api response: ' + JSON.stringify(cw));
       console.log(`${cw.summary} ${cw.temperature}˚C`);
 
       let message = `${cw.summary}, *${Math.round(cw.temperature)}*˚C ` +
