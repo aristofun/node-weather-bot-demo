@@ -14,7 +14,7 @@ bot.start((ctx) => {
 });
 
 function locationReplier(ctx, lat, lng) {
-  console.log('Location received: ' + сtx.message);
+  console.log('Location received: ' + ctx.message);
 
   if (lat == null || lng == null) {
     lat = ctx.message.location.latitude;
