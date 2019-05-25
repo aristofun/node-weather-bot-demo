@@ -33,7 +33,7 @@ function locationReplier(ctx, lat, lng) {
         `Давление ${Math.round(cw.pressure * 0.75006157584566)} мм рт. ст.\n` +
         `Ветер ${cw.windSpeed} м/c\n` +
         `Влажность ${Math.round(cw.humidity * 100)}%\n` +
-        `Координаты: ш:${lat}, д:${lng}%\n\n` +
+        `http://www.google.com/maps/place/${lat},${lng}%\n\n` +
         resp.data.hourly.summary;
 
       console.log(message);
@@ -52,7 +52,6 @@ function locationReplier(ctx, lat, lng) {
     });
 }
 
-
 // На сообщение с типом location лезем в погодный сервис и отдаем погоду
 bot.on('location', locationReplier);
 
@@ -62,7 +61,9 @@ bot.on('message', (ctx) => {
 
   geo.geoCodeAddress(ctx.message.text)
     .then((resp) => {
-      console.log('geo response: ' + resp);
+      console.log('geo response: ' + resp.toString());
+      ctx.reply(resp.address);
+      
       locationReplier(ctx, resp.lat, resp.lng);
     })
     .catch((err) => {
