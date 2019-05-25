@@ -14,7 +14,7 @@ bot.start((ctx) => {
 });
 
 function locationReplier(ctx, lat, lng) {
-  console.log('Location received: ' + ctx.message);
+  console.log('Location received: ' + JSON.stringify(ctx.message));
 
   if (lat == null || lng == null) {
     lat = ctx.message.location.latitude;
@@ -23,7 +23,7 @@ function locationReplier(ctx, lat, lng) {
 
   weather.weather(lat, lng)
     .then((resp) => {
-      console.log('DarkSky api response: ' + resp);
+      console.log('DarkSky api response: ' + JSON.stringify(resp));
 
       let cw = resp.data.currently;
       console.log(`${cw.summary} ${cw.temperature}˚C`);
@@ -33,7 +33,7 @@ function locationReplier(ctx, lat, lng) {
         `Давление ${Math.round(cw.pressure * 0.75006157584566)} мм рт. ст.\n` +
         `Ветер ${cw.windSpeed} м/c\n` +
         `Влажность ${Math.round(cw.humidity * 100)}%\n` +
-        `http://www.google.com/maps/place/${lat},${lng}%\n\n` +
+        `http://www.google.com/maps/place/${lat},${lng}\n\n` +
         resp.data.hourly.summary;
 
       console.log(message);
@@ -61,7 +61,7 @@ bot.on('message', (ctx) => {
 
   geo.geoCodeAddress(ctx.message.text)
     .then((resp) => {
-      console.log('geo response: ' + resp.toString());
+      console.log('Geo response: ' + JSON.stringify(resp));
       ctx.reply(resp.address);
       
       locationReplier(ctx, resp.lat, resp.lng);
