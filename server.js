@@ -14,10 +14,9 @@ bot.start((ctx) => {
 });
 
 function locationReplier(ctx, lat, lng) {
-  console.log('Location received');
+  console.log('Location received: ' + сtx.message);
 
-  if (!!ctx) {
-    console.log(ctx.message);
+  if (lat == null || lng == null) {
     lat = ctx.message.location.latitude;
     lng = ctx.message.location.longitude;
   }
@@ -64,7 +63,7 @@ bot.on('message', (ctx) => {
   geo.geoCodeAddress(ctx.message.text)
     .then((resp) => {
       console.log('geo response: ' + resp);
-      locationReplier(undefined, resp.lat, resp.lng);
+      locationReplier(ctx, resp.lat, resp.lng);
     })
     .catch((err) => {
       let errMsg = `${err.name}/${err.statusCode}/${err.message}`;
