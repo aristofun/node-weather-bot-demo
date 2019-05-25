@@ -25,9 +25,8 @@ function locationReplier(ctx, lat, lng) {
   weather.weather(lat, lng)
     .then((resp) => {
       console.log('DarkSky api response: ' + resp);
-      
-      let cw = resp.data.currently;
 
+      let cw = resp.data.currently;
       console.log(`${cw.summary} ${cw.temperature}˚C`);
 
       let message = `${cw.summary}, *${Math.round(cw.temperature)}*˚C ` +
@@ -50,7 +49,7 @@ function locationReplier(ctx, lat, lng) {
     .catch((err) => {
       let errMsg = `${err.name}/${err.statusCode}/${err.message}`;
       console.log(errMsg);
-      ctx.reply('Ошибка определения погоды, попробуйте позже... \n' + errMsg);
+      ctx.reply('Ошибка определения погоды, попробуйте позже... 🤷\n');
     });
 }
 
