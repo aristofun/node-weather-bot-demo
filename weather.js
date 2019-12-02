@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-// Формируем параметры запроса к погодному API
+// Weather API params
 const wtUrl = `https://api.darksky.net/forecast/${process.env.WEATHER_TOKEN}/`;
 const wtParams = {params: {units: 'si', lang: 'ru', exclude: ['alerts', 'flags', 'daily']}};
 

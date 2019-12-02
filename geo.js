@@ -9,10 +9,13 @@ function geoCodeAddress(address) {
     }
   };
 
+  console.log(geoParams);
+
   return axios.get(geoUrl, geoParams)
     .then((resp) => {
       let body = resp.data;
-      // console.log(body);
+      console.log(body);
+
       if (body.status === 'ZERO_RESULTS') {
         throw new Error('No address found');
       } else if (body.status === 'OK') {

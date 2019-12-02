@@ -1,16 +1,15 @@
-// Подключаем телеграф и либу для http запросов
 require('dotenv').config();
 const tg = require('telegraf');
 const geo = require('./geo');
 const weather = require('./weather');
 
-// Создаем экземпляр бота с API ключем из переменных окружения
+// Bot instance with API token
 const bot = new tg(process.env.BOT_TOKEN);
 
-// Велкам сообщение для нового юзера
+// Welcome message for new user
 bot.start((ctx) => {
   console.log('/start', ctx.message);
-  ctx.reply('Пришли location 📍 или текстом адрес, узнаешь текущую погоду в нем');
+  ctx.reply('Send me Location 📍 or address string, and I\'ll check the weather');
 });
 
 function locationReplier(ctx, lat, lng) {
@@ -28,10 +27,10 @@ function locationReplier(ctx, lat, lng) {
       console.log(`${cw.summary} ${cw.temperature}˚C`);
 
       let message = `${cw.summary}, *${Math.round(cw.temperature)}*˚C ` +
-        `(ощущается как ${Math.round(cw.apparentTemperature)})\n\n` +
-        `Давление ${Math.round(cw.pressure * 0.75006157584566)} мм рт. ст.\n` +
-        `Ветер ${cw.windSpeed} м/c\n` +
-        `Влажность ${Math.round(cw.humidity * 100)}%\n` +
+        `(feels like ${Math.round(cw.apparentTemperature)})\n\n` +
+        `Pressure ${Math.round(cw.pressure * 0.75006157584566)}  mmHg\n` +
+        `Wind ${cw.windSpeed} m/sec\n` +
+        `Humidity ${Math.round(cw.humidity * 100)}%\n` +
         `http://www.google.com/maps/place/${lat},${lng}\n\n` +
         resp.data.hourly.summary;
 
@@ -47,14 +46,14 @@ function locationReplier(ctx, lat, lng) {
     .catch((err) => {
       let errMsg = `${err.name}/${err.statusCode}/${err.message}`;
       console.log(errMsg);
-      ctx.reply('Ошибка определения погоды, попробуйте позже... 🤷\n');
+      ctx.reply('Error getting the weather, try again later... 🤷\n');
     });
 }
 
-// На сообщение с типом location лезем в погодный сервис и отдаем погоду
+// Location type message
 bot.on('location', locationReplier);
 
-// На любое сообщение кроме location отвечаем подсказкой
+// Reply with hint on other types of messages
 bot.on('message', (ctx) => {
   console.log('Message received', ctx.message);
 
@@ -68,7 +67,7 @@ bot.on('message', (ctx) => {
     .catch((err) => {
       let errMsg = `${err.name}/${err.statusCode}/${err.message}`;
       console.log(errMsg);
-      ctx.reply('Ошибка поиска адреса 🤷‍♂️\n');
+      ctx.reply('Address lookup error 🤷‍♂️\n');
     });
 });
 
